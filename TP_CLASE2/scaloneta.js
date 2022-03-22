@@ -1,10 +1,6 @@
-class Jugador {
-    constructor(id, nombreCompleto, posicion, edad) {
+class Seleccion {
+    constructor(){
         this.seleccion = [];
-        this.id = id;
-        this.nombreCompleto = nombreCompleto;
-        this.posicion = posicion;
-        this.edad = edad;
     }
 
     agregar(jugador) {
@@ -20,7 +16,16 @@ class Jugador {
     }
 }
 
-const scaloneta = new Jugador();
+class Jugador {
+    constructor(id, nombreCompleto, posicion, edad) {
+        this.id = id;
+        this.nombreCompleto = nombreCompleto;
+        this.posicion = posicion;
+        this.edad = edad;
+    }
+}
+
+const scaloneta = new Seleccion();
 
 let jugador1 = new Jugador(23, "Damián Emiliano Martinez", "Arquero", 29);
 let jugador2 = new Jugador(3, "Nicolás Alejandro Tagliafico ", "Defensor", 29);
