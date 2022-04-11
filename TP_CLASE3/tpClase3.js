@@ -311,12 +311,14 @@ const buscarPorPosicion = () =>{
 };
 
 const nuevoJugador = () =>{
-    let nombre = document.getElementById("nuevoNombre"). value;
-    let posicion = document.getElementById("nuevaPosicion"). value;
-    let dorsal = document.getElementById("nuevaDorsal"). value;
-    let lugarNac = document.getElementById("nuevoLugarNac"). value;
-    let edad = document.getElementById("nuevaEdad"). value;
+    let nombre = document.getElementById("nuevoNombre").value;
+    let posicion = document.getElementById("nuevaPosicion").value;
+    let dorsal = document.getElementById("nuevaDorsal").value;
+    let lugarNac = document.getElementById("nuevoLugarNac").value;
+    let edad = document.getElementById("nuevaEdad").value;
+    let img = document.getElementById("nuevaFoto").value;
 
+    
     let jugadorNuevo = {
         nombre: nombre,
         posicion: posicion,
@@ -325,4 +327,26 @@ const nuevoJugador = () =>{
         edad, edad
     }
     console.log(jugadorNuevo)
+    
+    /*
+    const card = 
+        `
+        <div class="col-sm-6">
+            <div class="card" style="width: 15rem;">
+                <img src= "${img}" class="card-img-top" alt="5">
+                <div class="card-body">
+                    <h5 class="card-title">${nombre}</h5>
+                    <p class="card-text">
+                        Posicion: ${posicion}<br>
+                        Dorsal: ${dorsal}<br>
+                        Edad: ${edad}<br>
+                        Lugar de Nacimiento: ${lugarNac}
+                    </p>
+                </div>
+            </div> 
+        </div>
+        `
+        document.getElementById("card").innerHTML = "";
+        document.getElementById("card").insertAdjacentHTML('beforeend', card);
+        */
 }
