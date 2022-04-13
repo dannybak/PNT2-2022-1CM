@@ -17,12 +17,18 @@ const getApi = async () => {
     }
 }
 
+let pages = null;
+
 /***************************************************************************************/
-const start = async (page) => {
+const start = async (url = "https://rickandmortyapi.com/api/character") => {
     try{
-        const results = (await setApi(page)).results;
+        const response = (await fetch(url));
+        const {info, results} = await response.json();
+        pages = {next: info.next, prev: info.prev}
         buildCards(results)
         return results;
+        // document.getElementById("prev").disabled = !pages.prev
+        // document.getElementById("next").disabled = !pages.next
     }
     catch(err){
         console.error(err);
@@ -30,68 +36,90 @@ const start = async (page) => {
 }
 
 const nextPage = async () => {
-    document.getElementById("cards").innerHTML = "";
-    const {next} = (await getApi())._info;
-    const results = (await setApi(next)).results;
-    results != null ? buildCards(results) : console.log("NO EXISTE SIGUIENTE PAGINA")
+    try {
+        document.getElementById("cards").innerHTML = "";
+        start(pages.next)
+        // const {next} = (await getApi())._info;
+        // const results = (await setApi(next)).results;
+        // pages.next != null ? buildCards(pages.next) : console.log("NO EXISTE SIGUIENTE PAGINA")
+    } 
+    catch (err) {
+        console.log(err);
+    }
 }
 
 const prevPage = async () =>{
-    document.getElementById("cards").innerHTML = "";
-    const {prev} = (await getApi())._info;
-    const results = (await setApi(prev)).results;
-    results != null ? buildCards(results) : alert("NO EXISTE SIGUIENTE PREVIA")
+    try{
+        // const {prev} = (await getApi())._info;
+        // const results = (await setApi(prev)).results;
+        // results != null ? buildCards(results) : console.log("NO EXISTE SIGUIENTE PREVIA")
+        document.getElementById("cards").innerHTML = "";
+        start(pages.prev)
+    }
+    catch(err){
+        console.log(err);
+    }
 }
 
 
 const buscarPorNombre = async () => {
-    document.getElementById("cards").innerHTML = ""; 
-    const nombreABuscar = document.getElementById("buscarNombre").value;
-    const {pages} = (await getApi())._info;
-    let i = 0;
-    let encontrado;
-    while(i <= pages && encontrado == null){
-        let results = (await setApi(`https://rickandmortyapi.com/api/character?page=${i}`)).results;
-        let encontrado = results.find(x => x.name == nombreABuscar);    
-        if(encontrado != null){
-            buildCard(encontrado)
+    try {
+        const nombreABuscar = document.getElementById("buscarNombre").value;
+        const {pages} = (await getApi())._info;
+        let i = 0;
+        let encontrado;
+        while(i <= pages && encontrado == null){
+            let results = (await setApi(`https://rickandmortyapi.com/api/character?page=${i}`)).results;
+            let encontrado = results.find(x => x.name == nombreABuscar);    
+            if(encontrado != null){
+                buildCard(encontrado)
+            }
+            i++;
         }
-        i++;
+    } catch (error) {
+        console.log(error);
     }
 }
 
 const filtrarPorEstado = async () => {
-    document.getElementById("cards").innerHTML = ""; 
-    const estadoABuscar = document.getElementById("idEstado").value;
-    const {pages} = (await getApi())._info;
-    let i = 1;
-    while(i <= pages){
-        let results = (await setApi(`https://rickandmortyapi.com/api/character?page=${i}`)).results;
-        let encontrado = results.filter(x => x.status == estadoABuscar);    
-        buildCards(encontrado)
-        i++
+    try {
+        const estadoABuscar = document.getElementById("idEstado").value;
+        const {pages} = (await getApi())._info;
+        let i = 1;
+        while(i <= pages){
+            let results = (await setApi(`https://rickandmortyapi.com/api/character?page=${i}`)).results;
+            let encontrado = results.filter(x => x.status == estadoABuscar);    
+            buildCards(encontrado)
+            i++
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 
 const buscarPorEspecies = async () => {
-    document.getElementById("cards").innerHTML = ""; 
-    const especieABuscar = document.getElementById("idEspecie").value;
-    const {pages} = (await getApi())._info;
-    let i = 0;
-    let encontrado;
-    while(i <= pages && encontrado == null){
-        let results = (await setApi(`https://rickandmortyapi.com/api/character?page=${i}`)).results;
-        let encontrado = results.find(x => x.species == especieABuscar);    
-        if(encontrado != null){
-            buildCard(encontrado)
+    try {
+        const especieABuscar = document.getElementById("idEspecie").value;
+        const {pages} = (await getApi())._info;
+        let i = 0;
+        let encontrado;
+        while(i <= pages && encontrado == null){
+            let results = (await setApi(`https://rickandmortyapi.com/api/character?page=${i}`)).results;
+            let encontrado = results.find(x => x.species == especieABuscar);    
+            if(encontrado != null){
+                buildCard(encontrado)
+            }
+            i++;
         }
-        i++;
+    } catch (error) {
+        console.log(error);
     }
 }
 
 /***************************************************************************************/
 const buildCards = (results) => {
     try{
+    document.getElementById("cards").innerHTML = ""; 
     results.forEach((character) => {
         const card = `
             <div class = "col-4 mt-4">
@@ -115,6 +143,7 @@ const buildCards = (results) => {
 
 const buildCard = (result) => {
     try{
+    document.getElementById("cards").innerHTML = ""; 
     const card = `
         <div class = "col-4 mt-4">
             <div class="card" style="width: 18rem;">
@@ -135,4 +164,4 @@ const buildCard = (result) => {
 }
 /***************************************************************************************/
 
-window.onload = start("https://rickandmortyapi.com/api/character");
+window.onload = start();
