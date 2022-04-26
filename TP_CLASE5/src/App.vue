@@ -1,5 +1,5 @@
 <template>
-  <HelloWorld msg="Hola mundo carajo la p*** que lo pario"/>
+  <HelloWorld msg="Hola mundo"/>
 </template>
 
 <script>
